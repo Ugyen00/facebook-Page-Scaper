@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Facebook Page Content</title>
+    <style>
+      .post {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-bottom: 10px;
+      }
+
+      .post-text {
+        font-size: 18px;
+      }
+
+      .post-date {
+        font-size: 14px;
+        font-style: italic;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="fb-root"></div>
+    <h1>Facebook Page Content</h1>
+    <div id="content"></div>
+    <script>
+      const accessToken =
+        "EAAKDwGItCwYBOyNOOEoepHZAcGc1m0B6ksHWaQDhZBQaDD6Qz0ZBRvhXvt9pwByHuUuHSpj31E7NnOU1ZA7je7rlUo16isjHyZBVeXXu1MIkwciciySTB2UfASscj89Pmm6pkVUhiUcIU6hPPCu1dppkYi5pmP2AYNh8EHz7bPvuDEkDsOZBbW0N37uV2FZAZC2nU5ROX1o53Wk1UZAVhKar1qv8ZD";
+      const pageId = 101550476333422;
+      console.log("hello");
+      const apiUrl =
+        "https://graph.facebook.com/v18.0/101550476333422/?fields=posts{message, created_time}&access_token=EAAKDwGItCwYBOyNOOEoepHZAcGc1m0B6ksHWaQDhZBQaDD6Qz0ZBRvhXvt9pwByHuUuHSpj31E7NnOU1ZA7je7rlUo16isjHyZBVeXXu1MIkwciciySTB2UfASscj89Pmm6pkVUhiUcIU6hPPCu1dppkYi5pmP2AYNh8EHz7bPvuDEkDsOZBbW0N37uV2FZAZC2nU5ROX1o53Wk1UZAVhKar1qv8ZD";
+
+      fetch(apiUrl)
+        .then((response) => response.json())
+        .then((data) => {
+          const arr = data.posts.data;
+          showPosts(arr);
+        })
+        .catch((error) => console.error(error));
+
+      function showPosts(arr) {
+        arr.forEach((element) => {
+          showPost(element);
+        });
+      }
+
+      function showPost(ele) {
+        const content = document.getElementById("content");
+        const postContainer = document.createElement("div");
+        postContainer.classList.add("post");
+
+        if (ele.message) {
+          const message = document.createElement("p");
+          message.classList.add("post-text");
+          message.innerHTML = ele.message;
+          postContainer.appendChild(message);
+        }
+
+        if (ele.created_time) {
+          const date = document.createElement("p");
+          date.classList.add("post-date");
+          const postDate = new Date(ele.created_time);
+          date.innerHTML = "Date: " + postDate.toLocaleString();
+          postContainer.appendChild(date);
+        }
+
+        content.appendChild(postContainer);
+      }
+    </script>
+  </body>
+</html>
