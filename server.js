@@ -25,7 +25,7 @@ const Post = mongoose.model('Post', {
 
 const fetchAndStoreData = async () => {
     try {
-        const accessToken = "EAAKDwGItCwYBO43Kb7Hfrct13NBgQwhzUrXYnlMN6hFqxmhcT38k32xZBvNtbwCQCODYyddAHaOaUJP4aEh8KiQ2NzqyzWdG0H04LaSmOlzV9NDr2BSKxm0Vf6ZAFIqx81MZAjWPtfGi2HH3OrKdRomPyDYDuxLZBEZA9wZCPIs0RNrSIZAowVUuZCxm1sZBiSerT2qLduSpXDWWUgJecMJ1X8AwZD";
+        const accessToken = "EAAKDwGItCwYBO7qqPHGwB9nYZCxPBq4g3zjHizvAS1daXA7ZCpuV7XxLw1iH9G3D9ux0WQJSRTN9qsINMHYWGezvr2S595ybku4hKEEXyFisxz3G0ND1kpZCCZCWnOTI0z9pAQhDkfbAvZAgceljYpgXViPynGsS4LuC4b8jZCkCKFMLxwQhDrEHLVek538i9CXr3LuQtfPZCNkR5SjGuo3eFkZD";
         const pageId = 101550476333422;
         const apiUrl = `https://graph.facebook.com/v18.0/${pageId}/?fields=posts{message,created_time}&access_token=${accessToken}`;
 
@@ -34,14 +34,13 @@ const fetchAndStoreData = async () => {
         if (response.data && response.data.posts && response.data.posts.data) {
             const fetchedPosts = response.data.posts.data;
 
+            // Store new posts
             for (const fetchedPost of fetchedPosts) {
-                // Check if the post already exists in the database by its unique identifier (e.g., message or created_time)
                 const existingPost = await Post.findOne({
                     message: fetchedPost.message,
                     created_time: fetchedPost.created_time
                 });
 
-                // If the post doesn't exist, insert it into the database
                 if (!existingPost) {
                     await Post.create({
                         message: fetchedPost.message,
@@ -52,6 +51,7 @@ const fetchAndStoreData = async () => {
             }
 
             console.log('Data fetched and stored successfully');
+
         } else {
             console.error('API response format incorrect or missing data');
         }
@@ -63,7 +63,6 @@ const fetchAndStoreData = async () => {
 // Fetch and store data initially when the server starts
 fetchAndStoreData();
 
-// Set up an interval to fetch and store data every 10 minutes (600,000 milliseconds)
 setInterval(fetchAndStoreData, 50000);
 
 app.get('/posts', async (req, res) => {
@@ -84,4 +83,4 @@ app.get('/', (req, res) => {
 // Example listening port, replace 3030 with your desired port number
 app.listen(3030, () => {
     console.log('Server is running on port 3030');
-});
+}); 
