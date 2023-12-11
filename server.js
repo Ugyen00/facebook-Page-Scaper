@@ -25,7 +25,7 @@ const Post = mongoose.model('Post', {
 
 const fetchAndStoreData = async () => {
     try {
-        const accessToken = "EAAKDwGItCwYBO916J7F8jUB3kAslRZCyr3hgYULIKKktuoV7pbf9MiZCA2UubRwLJ4mqjMhQZCTgKDPh4YoA4RQFJVStgOHrFKNNigbiZAxrWfrl4tP3Wz87Ho7TrZAAMF1spT7ZCaoNnzFAzVRjGDRklDeMnBZAI45x5FMeoZCxG0sD2fOOT2CuWucfRFjrzEohKbnYyjSx1tZBMTo5q2c5YUocZD";
+        const accessToken = "EAAKDwGItCwYBO43Kb7Hfrct13NBgQwhzUrXYnlMN6hFqxmhcT38k32xZBvNtbwCQCODYyddAHaOaUJP4aEh8KiQ2NzqyzWdG0H04LaSmOlzV9NDr2BSKxm0Vf6ZAFIqx81MZAjWPtfGi2HH3OrKdRomPyDYDuxLZBEZA9wZCPIs0RNrSIZAowVUuZCxm1sZBiSerT2qLduSpXDWWUgJecMJ1X8AwZD";
         const pageId = 101550476333422;
         const apiUrl = `https://graph.facebook.com/v18.0/${pageId}/?fields=posts{message,created_time}&access_token=${accessToken}`;
 
@@ -50,6 +50,7 @@ const fetchAndStoreData = async () => {
                     console.log('New post added:', fetchedPost);
                 }
             }
+
             console.log('Data fetched and stored successfully');
         } else {
             console.error('API response format incorrect or missing data');
