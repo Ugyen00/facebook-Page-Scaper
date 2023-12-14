@@ -113,7 +113,10 @@ const lookForUpdates = async (req, res) => {
         data.forEach(async (feed) => {
           const feedd = await Post.findOne({ id: feed.id });
           if (!feedd) {
+            console.log(feed);
             await Post.create(feed);
+          } else {
+            console.log("no feed");
           }
         });
       });
@@ -152,7 +155,7 @@ mongoose
     app.listen(3030, () => {
       console.log("Server is running on port 3030");
       // fetchAndStoreData();
-      setInterval(lookForUpdates(), 30 * 60 * 1000);
+      setInterval(lookForUpdates, 30 * 60 * 1000);
       // getAccessToken();
     });
   })
