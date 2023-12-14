@@ -11,6 +11,7 @@ const dbUrl =
 
 // Define the Post model only once
 const Post = mongoose.model("Post", {
+  id: String,
   message: String,
   created_time: String,
 });
@@ -20,7 +21,7 @@ const fetchAndStoreData = async () => {
     const accessToken =
       "EAAKDwGItCwYBO1VXTBYxSjbQIoHyEAGZCQpfUQrmXGDfhvX8WV0XflEwsuImfDwmNhZAQTUWtZCrdEYLeoxb9Mhtv9YrWjT4mvrjKEXkoYeZC1IoR65R9KNGoZCUp5n6KrtsPYJbAydAP6PQjXHU8n2LeNBriVtbVbhJ5jQRKafjRCdwzpIhDk5is3J5el6IZD";
     const pageId = 101550476333422;
-    const apiUrl = `https://graph.facebook.com/v18.0/${pageId}/?fields=posts{message,created_time}&access_token=${accessToken}`;
+    const apiUrl = `https://graph.facebook.com/v18.0/${pageId}/?fields=posts{id,message,created_time}&access_token=${accessToken}`;
     var data = [];
     axios
       .get(apiUrl)
@@ -84,7 +85,7 @@ const fetchAndStoreData = async () => {
 
 // Fetch and store data initially when the server starts
 
-setInterval(fetchAndStoreData, 50000);
+// setInterval(fetchAndStoreData, 50000);
 
 app.get("/posts", async (req, res) => {
   try {
