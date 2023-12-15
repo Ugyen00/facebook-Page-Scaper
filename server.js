@@ -130,7 +130,7 @@ mongoose
     console.log("Connected to database");
     app.listen(3030, () => {
       console.log("Server is running on port 3030");
-      setInterval(lookForUpdates, 30 * 60 * 1000);
+      setInterval(lookForUpdates, 5 * 60 * 1000);
     });
   })
   .catch((err) => {
