@@ -42,6 +42,7 @@
           posts.sort(
             (a, b) => new Date(b.created_time) - new Date(a.created_time)
           );
+
           posts.forEach((post) => {
             const postElement = document.createElement("div");
             postElement.classList.add("post");
@@ -52,8 +53,6 @@
           console.error("Error fetching and displaying posts:", error);
         }
       }
-
-      // Call the function to fetch and display posts when the page loads
       fetchAndDisplayPosts();
     </script>
   </body>

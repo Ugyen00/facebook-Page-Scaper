@@ -6,10 +6,6 @@ const app = express();
 
 const dbUrl =
   "mongodb+srv://nomindbhutan:ZJEd2PhLifmzvUDQ@fbscraper.taussv1.mongodb.net/?retryWrites=true&w=majority";
-
-// Connect to the database
-
-// Define the Post model only once
 const Post = mongoose.model("Post", {
   id: String,
   message: String,
@@ -26,7 +22,6 @@ const fetchAndStoreData = async () => {
     axios
       .get(apiUrl)
       .then((response) => {
-        // console.log(response.data.posts.data);
         const posts = response.data.feed.data;
         posts.forEach((post) => {
           data.push(post);
@@ -38,14 +33,10 @@ const fetchAndStoreData = async () => {
         return null;
       })
       .then(async (nextPageResponse) => {
-        // console.log(nextPageResponse.data.data);
         const postss = nextPageResponse.data.data;
         postss.forEach((post) => {
           data.push(post);
         });
-        // data.push(nextPageResponse.data.data);
-        // console.log(data);
-        // const d = JSON.parse(JSON.stringify(data));
         const posts = await Post.insertMany(data);
       });
   } catch (error) {
@@ -88,8 +79,6 @@ const lookForUpdates = async (req, res) => {
     axios
       .get(apiUrl)
       .then((response) => {
-        // console.log(response.data.posts.data);
-        // console.log(response.data);
         const posts = response.data.feed.data;
         posts.forEach((post) => {
           data.push(post);
@@ -101,15 +90,10 @@ const lookForUpdates = async (req, res) => {
         return null;
       })
       .then(async (nextPageResponse) => {
-        // console.log(nextPageResponse.data.data);
         const postss = nextPageResponse.data.data;
         postss.forEach((post) => {
           data.push(post);
         });
-        // data.push(nextPageResponse.data.data);
-        // console.log(data);
-        // const d = JSON.parse(JSON.stringify(data));
-        // const posts = await Post.insertMany(data);
         data.forEach(async (feed) => {
           const feedd = await Post.findOne({ id: feed.id });
           if (!feedd) {
@@ -122,19 +106,13 @@ const lookForUpdates = async (req, res) => {
       });
   } catch (error) {
     console.log("errror", error);
-    // res.status(500).json({ error: err });
   }
 };
 
-// Fetch and store data initially when the server starts
-
-// setInterval(fetchAndStoreData, 50000);
-
 app.get("/posts", async (req, res) => {
   try {
-    // Fetch data from the database
     const posts = await Post.find({}).exec();
-    res.json(posts); // Send the fetched data as a JSON response
+    res.json(posts);
   } catch (error) {
     console.error("Error fetching posts:", error);
     res.status(500).json({ error: "Internal server error" });
@@ -145,18 +123,14 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
 
-// Example listening port, replace 3030 with your desired port number
 mongoose
   .connect(dbUrl, {
-    // Add necessary options if required
   })
   .then(() => {
     console.log("Connected to database");
     app.listen(3030, () => {
       console.log("Server is running on port 3030");
-      // fetchAndStoreData();
       setInterval(lookForUpdates, 30 * 60 * 1000);
-      // getAccessToken();
     });
   })
   .catch((err) => {
